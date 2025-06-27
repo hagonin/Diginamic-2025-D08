@@ -15,7 +15,7 @@
   i = null;
   console.log(`type de i : `, typeof (i));
 
-  if ("") console.log(`vrai`);
+  if ({}) console.log(`vrai`);
   else console.log(`faux`);
 
   // Portée des variables
