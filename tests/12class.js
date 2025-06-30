@@ -15,13 +15,19 @@
 // Utilisation des class qui sont du sucre syntaxique
 
 class Product {
+  static globalUrl = "https://www.products.fr";
+  static instancesNumber = 0;
+
   constructor(name, price, description) {
     this.name = name;
     this.price = price;
     this.description = description;
+
+    // Incrémentation de instancesNumber
+    Product.instancesNumber += 1;
   }
   showProduct() {
-    console.log(`Produit -  nom : ${this.name}, prix : ${this.price}, description : ${this.description}`);
+    console.log(`Produit -  nom : ${this.name}, prix : ${this.price}, description : ${this.description} - Tous les produits sont visibles sur ${Product.globalUrl} - Nombre global d'instances : ${Product.instancesNumber}`);
   }
 }
 
@@ -74,6 +80,7 @@ class Vehicule extends Product {
     // Appel de la méthode du même nom mais dans la classe mère
     super.showProduct();
     console.log(`Nombre de roues : ${this.wheels}`);
+    console.log(`Nombre produits : ${Vehicule.instancesNumber}`);
   }
 
 }
@@ -84,3 +91,5 @@ const vehicule1 = new Vehicule("R5", 500, "Magnifique R5", 4);
 vehicule1.start();
 vehicule1.wheels = 10;
 console.log(`vehicule1.wheels`, vehicule1.wheels);
+
+vehicule1.showProduct();
