@@ -74,7 +74,14 @@ const filteredFruits = fruits.filter((fruit) => {
   return fruit.includes("o")
 });
 console.log(`filteredFruits`, filteredFruits);
-// Créer un nouveaut tableau d'images du tableau initial
+
+// Créer un nouveau tableau d'images du tableau initial
+// Mettre en MAJUSCULE tous les noms de fruits
+const upperFruits = fruits.map((fruit) => fruit.toUpperCase());
+console.log(`upperFruits`, upperFruits);
+
+const liFruits = fruits.map((fruit) => `<li>${fruit}</li>`);
+console.log(`liFruits`, liFruits);
 
 // Fusionner 2 tableaux
 
