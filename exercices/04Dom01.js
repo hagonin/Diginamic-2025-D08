@@ -16,6 +16,12 @@ function createMarkup(markupname, parent, text = "", attributes = {}) {
   }
   return markup;
 }
-
+// Création d'un header
+const header = createMarkup("header", document.body);
 // Création d'une nav
-createMarkup("nav", document.body);
+const nav = createMarkup("nav", header);
+
+for (let i = 0; i < 4; i++) {
+  const button = createMarkup("button", nav, `item ${i + 1}`);
+  if (i == 0) button.style.color = "red";
+}
