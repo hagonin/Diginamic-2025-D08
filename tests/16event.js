@@ -11,5 +11,19 @@ function onClickH1Bis() {
 console.log(`h1.onclick`, h1.onclick);
 
 // addEventListener 
-h1.addEventListener("click", () => { onClickH1("Toto") });
+h1.addEventListener("click", (event) => { onClickH1("Toto") });
 h1.addEventListener("click", onClickH1Bis);
+
+// Création d'un lien
+const a = createMarkup("a", document.body, "Test de lien", { "href": "https://diginamic.fr" });
+
+a.addEventListener("click", (event) => {
+  event.preventDefault();
+  console.log(`lien cliqué`);
+});
+
+const form = document.querySelector("form");
+form.addEventListener("submit", (event) => {
+  event.preventDefault();
+  console.log(`Formulaire soumis`);
+})
