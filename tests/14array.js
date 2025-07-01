@@ -84,7 +84,12 @@ const liFruits = fruits.map((fruit) => `<li>${fruit}</li>`);
 console.log(`liFruits`, liFruits);
 
 // Fusionner 2 tableaux
+const newArray = [...fruits, ...artists];
+const newNewArray = fruits.concat(artists);
+console.log(`newArray`, newArray);
+console.log(`newNewArray`, newNewArray);
 
-// Réduire le tableau à une seule valeur
+// Chainage d'appels de méthodes
+//fruits.sort().filter().
 
 console.log(`fruits :`, fruits);
