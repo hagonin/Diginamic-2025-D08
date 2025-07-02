@@ -65,3 +65,29 @@ buttonDeleteTask.addEventListener("click", () => {
       console.error("Erreur attrapée : ", error)
     })
 })
+
+// PATCH
+const buttonPatchTask = document.getElementById("patch-task");
+buttonPatchTask.addEventListener("click", () => {
+  // Fetch avec la méthode post
+  fetch(endpointUrl + '/2',
+    {
+      method: "PATCH",
+      body: JSON.stringify({ "title": "Nouveau titre de tâche après PATCH " + Math.random() * 1000 })
+    }
+  )
+    .then(response => {
+      console.log(`response.status`, response.status);
+      if (response.status == 200) {
+        console.log(response.status);
+        return response.json();
+      }
+      else throw new Error("Problème de statut de la réponse : ", response.status);
+    })
+    .then(task => {
+      console.log(`task : `, task);
+    })
+    .catch(error => {
+      console.error("Erreur attrapée : ", error)
+    })
+})
