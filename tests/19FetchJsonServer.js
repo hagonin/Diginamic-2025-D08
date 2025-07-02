@@ -40,3 +40,28 @@ buttonAddTask.addEventListener("click", () => {
     })
 })
 
+const buttonDeleteTask = document.getElementById("delete-task");
+
+
+buttonDeleteTask.addEventListener("click", () => {
+  // Fetch avec la méthode post
+  fetch(endpointUrl + '/1',
+    {
+      method: "DELETE"
+    }
+  )
+    .then(response => {
+      console.log(`response.status`, response.status);
+      if (response.status == 200) {
+        console.log(response.status);
+        return response.json();
+      }
+      else throw new Error("Problème de statut de la réponse : ", response.status);
+    })
+    .then(task => {
+      console.log(`task : `, task);
+    })
+    .catch(error => {
+      console.error("Erreur attrapée : ", error)
+    })
+})
