@@ -15,27 +15,28 @@ fetch(endpointUrl)
     console.error("Erreur attrapée : ", error)
   })
 
-
-// Fetch avec la méthode post
-fetch(endpointUrl,
-  {
-    method: "POST",
-    body: JSON.stringify({ "title": "Sortir les poubelles", "done": false })
-  }
-)
-  .then(response => {
-    console.log(`response.status`, response.status);
-    if (response.status == 201) {
-      console.log(response.status);
-      return response.json();
+const buttonAddTask = document.getElementById("add-task");
+buttonAddTask.addEventListener("click", () => {
+  // Fetch avec la méthode post
+  fetch(endpointUrl,
+    {
+      method: "POST",
+      body: JSON.stringify({ "title": "Sortir les poubelles", "done": false })
     }
-    else throw new Error("Problème de statut de la réponse : ", response.status);
-  })
-  .then(task => {
-    console.log(`task : `, task);
-  })
-  .catch(error => {
-    console.error("Erreur attrapée : ", error)
-  })
-
+  )
+    .then(response => {
+      console.log(`response.status`, response.status);
+      if (response.status == 201) {
+        console.log(response.status);
+        return response.json();
+      }
+      else throw new Error("Problème de statut de la réponse : ", response.status);
+    })
+    .then(task => {
+      console.log(`task : `, task);
+    })
+    .catch(error => {
+      console.error("Erreur attrapée : ", error)
+    })
+})
 
