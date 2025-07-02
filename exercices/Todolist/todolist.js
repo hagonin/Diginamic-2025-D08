@@ -1,35 +1,80 @@
 import Task from "./Task.js";
 import FormAddTask from "./FormAddTask.js";
+import { createMarkup, loadTasks } from './utils/utils.js';
 
 // Création et affichage du formulaire
 new FormAddTask();
-// Test de création d'une tâche
-new Task("Faire la vaisselle");
-new Task("Faire les devoirs");
 
-// Création d'un classe Todolist qui va utiliser FormAddTask et Task
+class Todolist {
+  constructor() {
+    this.tasks = [];
 
-// La classe Todolist doit avoir la propriété tasks qui est un tableau de tâches vide par défaut
-const task = [
-  {
-    "id": "2",
-    "title": "Nouveau titre de tâche après PATCH 698.3671742487269",
-    "done": true
-  },
-  {
-    "id": "cc26",
-    "title": "Sortir les poubelles",
-    "done": false
+    this.sectionTasks = this.renderMainElements();
+    this.setUp();
+
+    this.manageEvents();
   }
-]
+  manageEvents() {
+    // abonnement à la modification d'une tâche
+    document.addEventListener("patchTask", (event) => {
+      console.log(event.detail.id)
+      this.patchTasks(event.detail.id);
+      this.renderTasks();
+    });
+    // abonnement à la suppression d'une tâche
+    document.addEventListener('deleteTask', (event) => {
+      console.log("Tâche à supprimer dans la todolist : ", event.detail.id);
+      this.deleteTask(event.detail.id);
+      this.renderTasks();
 
-// Ce tableau de tâches va être alimenté par json server
+    });
+    // abonnement à l'ajout d'une tâche
+    document.addEventListener('addTask', (event) => {
+      console.log("Tâche à ajouter dans la todolist : ", event.detail);
+      this.tasks.push(event.detail);
+      this.renderTasks();
+    });
+  }
+  async setUp() {
 
-// Le tableau de tâches doit permettre de créer les tâches (instanciation de Task) dès qu'un changement est opéré
+    this.tasks = await loadTasks();
+    this.renderTasks();
+  }
+  renderMainElements() {
+    const sectionTasks = createMarkup("section", document.body, "", { class: "container" });
+    return sectionTasks;
+  }
+  renderTasks() {
+    this.sectionTasks.innerHTML = "";
+    this.tasks.sort((a, b) => a.done - b.done).forEach(task => {
+      new Task(task, this.sectionTasks);
+    })
+  }
+  deleteTask(id) {
+    this.tasks = this.tasks.filter(task => task.id !== id);
+  }
+  patchTasks(taskId) {
+    const task = this.tasks.find(task => task.id === taskId);
+    if (task) {
+      task.done = !task.done; // Toggle : true devient false, false devient true
+    }
 
-// La classe FormAddTask doit permettre d'ajouter une tâche persistante via fetch avec la méthode POST
-// FormAddTask va également créer un nouvel événement custom (https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent/CustomEvent)
+  }
+  loadTasks() {
+    return fetch(this.tasksUrl)
+      .then(response => {
+        if (response.status == 200) {
+          return response.json();
+        } else throw new Error("Pp dans fetch get :" + response.status)
+      })
+      .then(tasks => {
+        console.log(`tasks`, tasks);
+        return tasks;
+      })
+      .catch(error => {
+        console.error("Erreur attrapée dans loadTasks", error)
+      })
+  }
+}
+new Todolist();
 
-// La classe Todolist va réagir à l'événement custom émis par FormAddTask en modifiant tasks et donc en rappelant la méthode qui crée les tâches (Task) pour afficher toutes les tâches dont la nouvelle tâche
-
-// La classe Task sert à afficher chaque tâche mais également à gérer les événements : supprimer un tâche ou modifier une tâche lors du click sur le bouton "valider / invalider". Tous ces événements doivent envoyer un requête via fetch (DELETE ou PATCH) et créer un événement custom qui sera écouté par Todolist.
